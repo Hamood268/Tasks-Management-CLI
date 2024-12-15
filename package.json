@@ -1,0 +1,23 @@
+{
+  "name": "cli-tasks-manager",
+  "version": "1.0.0",
+  "description": "A cli tool to help manage taks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hamood268/CLI-Tasks-Manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hamood268/CLI-Tasks-Manager/issues"
+  },
+  "homepage": "https://github.com/Hamood268/CLI-Tasks-Manager#readme",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "readline": "^1.3.0"
+  }
+}
