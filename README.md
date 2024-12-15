@@ -1,5 +1,5 @@
-# Tasks-Management-CLI
-#  A CLI Tool to help managing tasks 
+# Task-Manager-CLI
+#  A CLI Tool to help manage tasks 
 - Add Tasks
 - List Tasks
 - Mark as completed
