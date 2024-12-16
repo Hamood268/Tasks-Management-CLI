@@ -12,7 +12,7 @@ class TaskManager {
     loadTasks() {
         try {
             const data = fs.readFileSync(this.filename, 'utf8')
-            return json.parse(data)
+            return JSON.parse(data)
         } catch (error) {
             return [];
         }
@@ -22,14 +22,20 @@ class TaskManager {
         fs.writeFileSync(this.filename, JSON.stringify(this.tasks, null, 2))
     }
 
-    addtasks(title, priority = 'Medium', dueDate = null) {
+    addtasks(title, priority = 'Medium', dueDate = 'Not Defined') {
+        if(!title.trim() || !priority.trim()){
+            console.log('Inputs cannot be empty... ')
+            return;
+        }
+
         const tasks = {
             id: Date.now(),
-            title,
-            priority,
-            dueDate,
-            compeleted: false,
+            title: title.trim(),
+            priority: priority.charAt(0).toUpperCase() + priority.slice(1).toLowerCase(),
+            dueDate: dueDate || 'Not Defined',
+            completed: false,
         };
+        
         this.tasks.push(tasks);
         this.saveTasks();
         console.log('Tasks Added Sucessfully')
@@ -43,20 +49,20 @@ class TaskManager {
         this.tasks.forEach(task => {
             console.log(`
                 
-Added: ${task.id},
+ID: ${task.id},
 Title: ${task.title},
 Priority: ${task.priority},
 Due At: ${task.dueDate || 'No Due Date'},
-Completed: ${task.compeleted ? 'Completed' : 'Pending'}.
+Completed: ${task.completed ? 'Completed' : 'Pending'}.
 --------------------------------------
                 `)
         });
     }
 
-    compeletedTask(id) {
-        const taskIndex = this.id.findIndex(task => task.id === id);
+    completedTasks(id) {
+        const taskIndex = this.tasks.findIndex(task => task.id === id);
         if (taskIndex !== -1) {
-            this.tasks[taskIndex].compeleted = true;
+            this.tasks[taskIndex].completed = true;
             console.log('Task marked as Completed !')
         } else {
             console.log('No completed tasks')
@@ -111,7 +117,7 @@ Choose an option... `, (answer) => {
                     case '3':
                         try {
                             rl.question('Enter the task ID to mark as complete: ', (id) => {
-                                taskManager.compeletedTask(Number(id));
+                                taskManager.completedTasks(Number(id));
                                 prompt();
                             });
                         } catch (error) {
@@ -130,17 +136,35 @@ Choose an option... `, (answer) => {
                         };
 
                         break;
-                    case '5':
-                        rl.on('line', function (input) {
-                            console.log('Program existing')
-                            rl.pause(); // pause
-                            doAsynsStuff(input).then(function () {
-                              rl.prompt(); // resume
-                            }).catch(function () {
-                              rl.prompt(); // resume
+                        case '5':
+                            function animatedExit(seconds) {
+                                return new Promise((resolve) => {
+                                    let remaining = seconds;
+                                    
+                                    const spinner = ['|', '/', '-', '\\'];
+                                    let spinnerIndex = 0;
+
+                                    const timer = setInterval(() => {
+                                        process.stdout.write(`\rExiting in ${remaining} seconds ${spinner[spinnerIndex]}`);
+                                        
+                                        spinnerIndex = (spinnerIndex + 1) % 4;
+                                        remaining--;
+
+                                        if (remaining < 0) {
+                                            clearInterval(timer);
+                                            console.log('\nGoodbye!');
+                                            resolve();
+                                        }
+                                    }, 1000);
+                                });
+                            }
+
+                            animatedExit(5).then(() => {
+                                rl.pause(); // Pause the readline interface
+                                rl.close(); // Close the interface
+                                process.exit(0); // Forcefully exit the process
                             });
-                          });
-                        break;
+                            break;
                     default:
                         console.log('Invalid input');
                         prompt();
