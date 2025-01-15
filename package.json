@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Hamood268/Tasks-Manager-CLI#readme",
   "dependencies": {
-    "chalk": "^5.3.0",
+    "chalk": "^5.4.1",
+    "clear": "^0.1.0",
+    "console-table-printer": "^2.12.1",
     "figlet": "^1.8.0",
     "fs": "^0.0.1-security",
     "gradient-string": "^3.0.0",
